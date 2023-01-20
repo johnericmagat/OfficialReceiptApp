@@ -57,12 +57,7 @@ namespace OfficialReceiptApp
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			string textFile = @"D:\HII\Projects\EASY_RESTAURANT\_Documents\_Test\logs\2023120.txt";
-
 			string text = File.ReadAllText(textFile);
-
-			//string[] lines = File.ReadAllLines(textFile);
-			//foreach (string line in lines)
-			//	Console.WriteLine(line);
 
 			RepOfficialReceiptModel deserializedOR = JsonConvert.DeserializeObject<RepOfficialReceiptModel>(text);
 
