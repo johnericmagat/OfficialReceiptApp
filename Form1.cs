@@ -1,15 +1,16 @@
 ﻿using Newtonsoft.Json;
 using OfficialReceiptApp.Controllers;
 using OfficialReceiptApp.Models;
-using SharpCompress.Common;
 using Squirrel;
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace OfficialReceiptApp
 {
@@ -28,17 +29,18 @@ namespace OfficialReceiptApp
 			this.Text += $"Official Receipt v.{versionNumber}";
 		}
 
-		string fileServerLocation = ConfigurationManager.AppSettings["fileServerLocation"].ToString();
+		string installerLocation = ConfigurationManager.AppSettings["installerLocation"].ToString();
 		string textFileLocation = ConfigurationManager.AppSettings["textFileLocation"].ToString();
-		Timer timer;
-		bool isBusy = false;
+
+		DispatcherTimer dispatcherTimer;
+		BackgroundWorker backgroundWorker;
 
 		private async Task CheckAndApplyUpdate()
 		{
 			try
 			{
 				bool updated = false;
-				using (var updateManager = new UpdateManager(fileServerLocation))
+				using (var updateManager = new UpdateManager(installerLocation))
 				{
 					var updateInfo = await updateManager.CheckForUpdate();
 					if (updateInfo.ReleasesToApply != null &&
@@ -58,19 +60,6 @@ namespace OfficialReceiptApp
 			}
 		}
 
-		public void InitTimer()
-		{
-			timer = new Timer();
-			timer.Tick += new EventHandler(timer_Tick);
-			timer.Interval = 1000;
-			timer.Start();
-		}
-
-		private void timer_Tick(object sender, EventArgs e)
-		{
-			this.PrintOR();
-		}
-
 		private void PrintOR()
 		{
 			DirectoryInfo info = new DirectoryInfo(textFileLocation);
@@ -88,9 +77,24 @@ namespace OfficialReceiptApp
 			}
 		}
 
+		private void dispatcherTimer_Tick(object sender, EventArgs e)
+		{
+			if (!backgroundWorker.IsBusy)
+			{
+				backgroundWorker.WorkerReportsProgress = true;
+				backgroundWorker.DoWork += (obj, ea) => this.PrintOR();
+				backgroundWorker.RunWorkerAsync();
+			}
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			InitTimer();
+			dispatcherTimer = new DispatcherTimer();
+			backgroundWorker = new BackgroundWorker();
+
+			dispatcherTimer.Tick += dispatcherTimer_Tick;
+			dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+			dispatcherTimer.Start();
 		}
 	}
 }
