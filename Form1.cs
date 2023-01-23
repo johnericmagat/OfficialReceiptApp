@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ namespace OfficialReceiptApp
 		public Form1()
 		{
 			InitializeComponent();
+			this.FormBorderStyle = FormBorderStyle.None;
+			this.ShowInTaskbar = false;
+			this.Load += new EventHandler(Form1_Load);
 
 			Task.Run(() => CheckAndApplyUpdate()).GetAwaiter().GetResult();
 
@@ -89,6 +93,7 @@ namespace OfficialReceiptApp
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
+			this.Size = new Size(0, 0);
 			dispatcherTimer = new DispatcherTimer();
 			backgroundWorker = new BackgroundWorker();
 
