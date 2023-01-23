@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OfficialReceiptApp.Controllers;
 using OfficialReceiptApp.Models;
+using SharpCompress.Common;
 using Squirrel;
 using System;
 using System.Configuration;
@@ -28,6 +29,9 @@ namespace OfficialReceiptApp
 		}
 
 		string fileServerLocation = ConfigurationManager.AppSettings["fileServerLocation"].ToString();
+		string textFileLocation = ConfigurationManager.AppSettings["textFileLocation"].ToString();
+		Timer timer;
+		bool isBusy = false;
 
 		private async Task CheckAndApplyUpdate()
 		{
@@ -54,15 +58,39 @@ namespace OfficialReceiptApp
 			}
 		}
 
+		public void InitTimer()
+		{
+			timer = new Timer();
+			timer.Tick += new EventHandler(timer_Tick);
+			timer.Interval = 1000;
+			timer.Start();
+		}
+
+		private void timer_Tick(object sender, EventArgs e)
+		{
+			this.PrintOR();
+		}
+
+		private void PrintOR()
+		{
+			DirectoryInfo info = new DirectoryInfo(textFileLocation);
+			FileInfo[] files = info.GetFiles("*.txt");
+
+			foreach (FileInfo file in files)
+			{
+				string text = File.ReadAllText(Path.Combine(textFileLocation, file.Name));
+				RepOfficialReceiptModel deserializedOR = JsonConvert.DeserializeObject<RepOfficialReceiptModel>(text);
+
+				RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
+				repOfficialReceiptController.PrintOfficialReceipt(deserializedOR.SalesId, deserializedOR.CollectionId, false, "");
+
+				if (File.Exists(Path.Combine(textFileLocation, file.Name))) File.Delete(Path.Combine(textFileLocation, file.Name));
+			}
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			string textFile = @"C:\OR\logs\2023123.txt";
-			string text = File.ReadAllText(textFile);
-
-			RepOfficialReceiptModel deserializedOR = JsonConvert.DeserializeObject<RepOfficialReceiptModel>(text);
-
-			RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
-			repOfficialReceiptController.PrintOfficialReceipt(deserializedOR.SalesId, deserializedOR.CollectionId, false, "");
+			InitTimer();
 		}
 	}
 }
