@@ -84,12 +84,10 @@ namespace OfficialReceiptApp
 				else if (deserializedJson.Type == "BR")
 				{
 				}
-				else if (deserializedJson.Type == "KOS")
-				{
-					//also print DOS
-				}
 				else
 				{
+					//print KOS
+					//print DOS
 				}
 
 				if (File.Exists(Path.Combine(textFileLocation, file.Name))) File.Delete(Path.Combine(textFileLocation, file.Name));
