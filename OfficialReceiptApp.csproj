@@ -85,6 +85,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\RepBilloutReceiptController.cs" />
+    <Compile Include="Controllers\RepDinningOrderSlipController.cs" />
+    <Compile Include="Controllers\RepKitchenOrderSlipController.cs" />
     <Compile Include="Controllers\RepOfficialReceiptController.cs" />
     <Compile Include="Data\EasyRestaurantDB.designer.cs">
       <AutoGen>True</AutoGen>
@@ -97,7 +100,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\RepOfficialReceiptModel.cs" />
+    <Compile Include="Models\RepTextFileModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Data\EasyRestaurantDB.dbml.layout">

@@ -64,7 +64,7 @@ namespace OfficialReceiptApp
 			}
 		}
 
-		private void PrintOR()
+		private void Print()
 		{
 			if (!Directory.Exists(textFileLocation)) Directory.CreateDirectory(textFileLocation);
 
@@ -74,10 +74,23 @@ namespace OfficialReceiptApp
 			foreach (FileInfo file in files)
 			{
 				string text = File.ReadAllText(Path.Combine(textFileLocation, file.Name));
-				RepOfficialReceiptModel deserializedOR = JsonConvert.DeserializeObject<RepOfficialReceiptModel>(text);
+				RepTextFileModel deserializedJson = JsonConvert.DeserializeObject<RepTextFileModel>(text);
 
-				RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
-				repOfficialReceiptController.PrintOfficialReceipt(deserializedOR.SalesId, deserializedOR.CollectionId, false, "");
+				if (deserializedJson.Type == "OR")
+				{
+					RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
+					repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, false, "");
+				}
+				else if (deserializedJson.Type == "BR")
+				{
+				}
+				else if (deserializedJson.Type == "KOS")
+				{
+					//also print DOS
+				}
+				else
+				{
+				}
 
 				if (File.Exists(Path.Combine(textFileLocation, file.Name))) File.Delete(Path.Combine(textFileLocation, file.Name));
 			}
@@ -88,7 +101,7 @@ namespace OfficialReceiptApp
 			if (!backgroundWorker.IsBusy)
 			{
 				backgroundWorker.WorkerReportsProgress = true;
-				backgroundWorker.DoWork += (obj, ea) => this.PrintOR();
+				backgroundWorker.DoWork += (obj, ea) => this.Print();
 				backgroundWorker.RunWorkerAsync();
 			}
 		}
