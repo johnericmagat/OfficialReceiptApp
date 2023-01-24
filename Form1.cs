@@ -79,7 +79,7 @@ namespace OfficialReceiptApp
 				if (deserializedJson.Type == "OR")
 				{
 					RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
-					repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, false, "");
+					repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, false);
 				}
 				else if (deserializedJson.Type == "BR")
 				{

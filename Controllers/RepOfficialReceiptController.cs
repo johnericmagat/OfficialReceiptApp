@@ -17,55 +17,36 @@ namespace OfficialReceiptApp.Controllers
 		// ================
 		// Global Variables
 		// ================
-		private int trnSalesId = 0;
-		private int trnCollectionId = 0;
-		private bool trnIsReprinted = false;
-		private string printerName = "";
+		private int _salesId = 0;
+		private int _collectionId = 0;
+		private int _terminalId = 0;
+		private string _type = "";
+		private string _printer = "";
+		private bool _isReprinted = false;
 
 		// =============
 		// Print Receipt
 		// =============
-		public void PrintOfficialReceipt(int salesId, int collectionId, bool isReprint, string printName)
+		public void PrintOfficialReceipt(int salesId, int collectionId, int terminalId, string type, string printer, bool isReprint)
 		{
 			try
 			{
-				trnSalesId = salesId;
-				trnCollectionId = collectionId;
-				trnIsReprinted = isReprint;
-				printerName = printName;
-
-				this.GetDefaultPrinter();
+				_salesId = salesId;
+				_collectionId = collectionId;
+				_terminalId = terminalId;
+				_type = type;
+				_printer = printer;
+				_isReprinted = isReprint;
 
 				PrinterSettings ps = new PrinterSettings
 				{
-					PrinterName = printerName
+					PrinterName = _printer
 				};
 
 				PrintDocument pd = new PrintDocument();
 				pd.PrintPage += new PrintPageEventHandler(PrintOfficialReceiptPage);
 				pd.PrinterSettings = ps;
 				pd.Print();
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-		}
-
-		// ===============
-		// Default Printer
-		// ===============
-		private void GetDefaultPrinter()
-		{
-			try
-			{
-				PrinterSettings settings = new PrinterSettings();
-				foreach (string printer in PrinterSettings.InstalledPrinters)
-				{
-					settings.PrinterName = printer;
-					if (settings.IsDefaultPrinter)
-						printerName = printer;
-				}
 			}
 			catch (Exception ex)
 			{
@@ -225,7 +206,7 @@ namespace OfficialReceiptApp.Controllers
 			// =================
 			// Collection Header
 			// =================
-			var collections = from d in db.TrnCollections where d.Id == trnCollectionId select d;
+			var collections = from d in db.TrnCollections where d.Id == _collectionId select d;
 			if (collections.Any())
 			{
 				String collectionNumberText = collections.FirstOrDefault().CollectionNumber;
@@ -240,7 +221,7 @@ namespace OfficialReceiptApp.Controllers
 				graphics.DrawString(collectionTimeText, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 				y += graphics.MeasureString(collectionTimeText, fontArial8Regular).Height;
 
-				if (trnIsReprinted)
+				if (_isReprinted)
 				{
 					graphics.DrawString("REPRINTED", fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 					y += graphics.MeasureString("REPRINTED", fontArial8Regular).Height;
@@ -267,7 +248,7 @@ namespace OfficialReceiptApp.Controllers
 				Decimal divider = 1.12M;
 				Decimal totalVATExempt = 0;
 
-				var sales = from d in db.TrnSales where d.Id == trnSalesId select d;
+				var sales = from d in db.TrnSales where d.Id == _salesId select d;
 
 				String itemLabel = "\nITEM";
 				String amountLabel = "\nAMOUNT";
@@ -275,7 +256,7 @@ namespace OfficialReceiptApp.Controllers
 				graphics.DrawString(amountLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
 				y += graphics.MeasureString(itemLabel, fontArial8Regular).Height + 5.0F;
 
-				var salesLines = from d in db.TrnSalesLines where d.SalesId == trnSalesId select d;
+				var salesLines = from d in db.TrnSalesLines where d.SalesId == _salesId select d;
 				if (salesLines.Any())
 				{
 					var salesLineGroupbyItem = from s in salesLines
