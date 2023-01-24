@@ -66,6 +66,8 @@ namespace OfficialReceiptApp
 
 		private void PrintOR()
 		{
+			if (!Directory.Exists(textFileLocation)) Directory.CreateDirectory(textFileLocation);
+
 			DirectoryInfo info = new DirectoryInfo(textFileLocation);
 			FileInfo[] files = info.GetFiles("*.txt");
 
