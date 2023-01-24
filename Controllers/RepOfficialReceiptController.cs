@@ -27,7 +27,7 @@ namespace OfficialReceiptApp.Controllers
 		// =============
 		// Print Receipt
 		// =============
-		public void PrintOfficialReceipt(int salesId, int collectionId, int terminalId, string type, string printer, bool isReprint)
+		public void PrintOfficialReceipt(int salesId, int collectionId, int terminalId, string type, string printerName, bool isReprint)
 		{
 			try
 			{
@@ -35,7 +35,7 @@ namespace OfficialReceiptApp.Controllers
 				_collectionId = collectionId;
 				_terminalId = terminalId;
 				_type = type;
-				_printer = printer;
+				_printer = printerName;
 				_isReprinted = isReprint;
 
 				this.GetDefaultPrinter();
