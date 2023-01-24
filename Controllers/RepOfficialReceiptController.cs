@@ -38,6 +38,8 @@ namespace OfficialReceiptApp.Controllers
 				_printer = printer;
 				_isReprinted = isReprint;
 
+				this.GetDefaultPrinter();
+
 				PrinterSettings ps = new PrinterSettings
 				{
 					PrinterName = _printer
@@ -47,6 +49,27 @@ namespace OfficialReceiptApp.Controllers
 				pd.PrintPage += new PrintPageEventHandler(PrintOfficialReceiptPage);
 				pd.PrinterSettings = ps;
 				pd.Print();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+		}
+
+		// ===============
+		// Default Printer
+		// ===============
+		private void GetDefaultPrinter()
+		{
+			try
+			{
+				PrinterSettings settings = new PrinterSettings();
+				foreach (string printer in PrinterSettings.InstalledPrinters)
+				{
+					settings.PrinterName = printer;
+					if (settings.IsDefaultPrinter)
+						_printer = printer;
+				}
 			}
 			catch (Exception ex)
 			{
