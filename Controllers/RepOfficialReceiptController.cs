@@ -38,7 +38,7 @@ namespace OfficialReceiptApp.Controllers
 				_printer = printerName;
 				_isReprinted = isReprint;
 
-				this.GetDefaultPrinter();
+				//this.GetDefaultPrinter();
 
 				PrinterSettings ps = new PrinterSettings
 				{
