@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -21,6 +22,7 @@ namespace OfficialReceiptApp.Controllers
 		private int _terminalId = 0;
 		private string _type = "";
 		private string _printer = "";
+		private bool useDefaultPrinter = Boolean.Parse(ConfigurationManager.AppSettings["useDefaultPrinter"].ToString());
 
 		// =============
 		// Print Receipt
@@ -34,9 +36,9 @@ namespace OfficialReceiptApp.Controllers
 				_type = type;
 				_printer = printerName;
 
-				//this.GetDefaultPrinter();
+				if (useDefaultPrinter) this.GetDefaultPrinter();
 
-                PrinterSettings ps = new PrinterSettings
+				PrinterSettings ps = new PrinterSettings
                 {
                     PrinterName = _printer
                 };
