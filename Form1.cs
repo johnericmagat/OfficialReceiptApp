@@ -88,6 +88,8 @@ namespace OfficialReceiptApp
 				}
 				else
 				{
+					RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
+					repDinningOrderSlipController.PrintOS(deserializedJson.SalesId, deserializedJson.Type, deserializedJson.Printer);
 					//print KOS
 					//print DOS
 				}
