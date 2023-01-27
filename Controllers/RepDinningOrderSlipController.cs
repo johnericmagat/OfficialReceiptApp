@@ -1,38 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OfficialReceiptApp.Controllers
 {
-	public class RepDinningOrderSlipController
+    public class RepDinningOrderSlipController
 	{
-        Data.EasyRestaurantDBDataContext db = new Data.EasyRestaurantDBDataContext();
+		// ============
+		// Data Context
+		// ============
+		Data.EasyRestaurantDBDataContext db = new Data.EasyRestaurantDBDataContext();
 
-        // ================
-        // Global Variables
-        // ================
-        private int _salesId = 0;
-        private string _type = "";
-        private string _printer = "";
+		// ================
+		// Global Variables
+		// ================
+		private int _salesId = 0;
+		private int _collectionId = 0;
+		private int _terminalId = 0;
+		private string _type = "";
+		private string _printer = "";
 
-        public void PrintOS(int salesId, string type, string printerName)
+		// =============
+		// Print Receipt
+		// =============
+		public void PrintDOS(int salesId, int terminalId, string type, string printerName)
         {
             try
             {
-                _salesId = salesId;
-                _type = type;
-                _printer = printerName;
+				_salesId = salesId;
+				_terminalId = terminalId;
+				_type = type;
+				_printer = printerName;
 
-                this.GetDefaultPrinter();
+				//this.GetDefaultPrinter();
 
-                PrinterSettings ps = new PrinterSettings
+				PrinterSettings ps = new PrinterSettings
                 {
                     PrinterName = _printer
                 };
@@ -70,7 +76,10 @@ namespace OfficialReceiptApp.Controllers
             }
         }
 
-        public void PrintOrderSlipPage(object sender, PrintPageEventArgs e)
+		// ==========
+		// Print Page
+		// ==========
+		public void PrintOrderSlipPage(object sender, PrintPageEventArgs e)
         {
          
             // =============
@@ -622,6 +631,5 @@ namespace OfficialReceiptApp.Controllers
                 graphics.DrawString(space, fontArial8Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             //}
         }
-
     }
 }
