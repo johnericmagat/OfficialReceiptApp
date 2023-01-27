@@ -84,7 +84,7 @@ namespace OfficialReceiptApp
 				else if (deserializedJson.Type == "BR")
 				{
 					RepBilloutReceiptController repBilloutReceiptController = new RepBilloutReceiptController();
-					repBilloutReceiptController.PrintBill(deserializedJson.SalesId, deserializedJson.Type, deserializedJson.Printer);
+					repBilloutReceiptController.PrintBillReceipt(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
 				}
 				else
 				{

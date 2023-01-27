@@ -1,35 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficialReceiptApp.Controllers
 {
-	public class RepBilloutReceiptController
+    public class RepBilloutReceiptController
 	{
-        Data.EasyRestaurantDBDataContext db = new Data.EasyRestaurantDBDataContext();
+		// ============
+		// Data Context
+		// ============
+		Data.EasyRestaurantDBDataContext db = new Data.EasyRestaurantDBDataContext();
 
-        // ================
-        // Global Variables
-        // ================
-        private int _salesId = 0;
-        private string _type = "";
-        private string _printer = "";
+		// ================
+		// Global Variables
+		// ================
+		private int _salesId = 0;
+		private int _collectionId = 0;
+		private int _terminalId = 0;
+		private string _type = "";
+		private string _printer = "";
 
-        public void PrintBill(int salesId, string type, string printerName)
+		// =============
+		// Print Receipt
+		// =============
+		public void PrintBillReceipt(int salesId, int terminalId, string type, string printerName)
         {
             try
             {
-                _salesId = salesId;
-                _type = type;
-                _printer = printerName;
+				_salesId = salesId;
+				_terminalId = terminalId;
+				_type = type;
+				_printer = printerName;
 
-                this.GetDefaultPrinter();
+				//this.GetDefaultPrinter();
 
                 PrinterSettings ps = new PrinterSettings
                 {
@@ -37,7 +42,7 @@ namespace OfficialReceiptApp.Controllers
                 };
 
                 PrintDocument pd = new PrintDocument();
-                pd.PrintPage += new PrintPageEventHandler(PrintBillPage);
+                pd.PrintPage += new PrintPageEventHandler(PrintBillReceiptPage);
                 pd.PrinterSettings = ps;
                 pd.Print();
 
@@ -72,7 +77,7 @@ namespace OfficialReceiptApp.Controllers
         // ==========
         // Print Page
         // ==========
-        public void PrintBillPage(object sender, PrintPageEventArgs e)
+        public void PrintBillReceiptPage(object sender, PrintPageEventArgs e)
         {
             Font fontArial12Bold = new Font("Arial", 12, FontStyle.Bold);
             Font fontArial12Regular = new Font("Arial", 12, FontStyle.Regular);
@@ -81,7 +86,6 @@ namespace OfficialReceiptApp.Controllers
             Font fontArial8Bold = new Font("Arial", 8, FontStyle.Bold);
             Font fontArial8Regular = new Font("Arial", 8, FontStyle.Regular);
             Font fontArial10Bold = new Font("Arial", 10, FontStyle.Bold);
-
 
             // ==================
             // Alignment Settings
@@ -102,8 +106,6 @@ namespace OfficialReceiptApp.Controllers
                 x = 5; y = 5;
                 width = 260.0F; height = 0F;
             //}
-
-
 
             // ==============
             // Tools Settings
@@ -203,6 +205,7 @@ namespace OfficialReceiptApp.Controllers
             String discountGiven = "";
             Decimal lessVAT = 0;
             var sales = from d in db.TrnSales where d.Id == _salesId select d;
+
             String tableLabel = "";
             if (sales.FirstOrDefault().MstTable.TableCode != "Walk-In" && sales.FirstOrDefault().MstTable.TableCode != "Delivery")
             {
@@ -282,7 +285,6 @@ namespace OfficialReceiptApp.Controllers
                     foreach (var salesLine in salesLineGroupbyItem.ToList())
                     {
                         totalNumberOfItems += 1;
-
                         totalGrossSales += salesLine.Price * salesLine.Quantity;
                         totalSales += salesLine.Amount;
                         totalDiscount += salesLine.DiscountAmount;
@@ -409,7 +411,6 @@ namespace OfficialReceiptApp.Controllers
                 String space = "\n\n\n.";
                 graphics.DrawString(space, fontArial8Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             //}
-
         }
     }
 }
