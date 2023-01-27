@@ -107,7 +107,7 @@ namespace OfficialReceiptApp.Controllers
 
             float x, y;
             float width, height;
-           // if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
+            // if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
             //{
             //    x = 5; y = 5;
             //    width = 245.0F; height = 0F;
@@ -617,7 +617,6 @@ namespace OfficialReceiptApp.Controllers
                     graphics.DrawImage(bmp, x + 70, y + 15);
                     y += bmp.Height + 7;
                 }
-
             }
 
             //if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
