@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OfficialReceiptApp.Data
+namespace PrintProcessor.Data
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -225,7 +225,7 @@ namespace OfficialReceiptApp.Data
     #endregion
 		
 		public EasyRestaurantDBDataContext() : 
-				base(global::OfficialReceiptApp.Properties.Settings.Default.easyposConnectionString, mappingSource)
+				base(global::PrintProcessor.Properties.Settings.Default.easyposConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

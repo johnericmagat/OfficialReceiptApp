@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
 
-namespace OfficialReceiptApp.Controllers
+namespace PrintProcessor.Controllers
 {
     public class RepBilloutReceiptController
 	{

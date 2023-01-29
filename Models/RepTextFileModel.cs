@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OfficialReceiptApp.Models
+namespace PrintProcessor.Models
 {
 	public class RepTextFileModel
 	{

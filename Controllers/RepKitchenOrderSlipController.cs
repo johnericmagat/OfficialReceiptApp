@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficialReceiptApp.Controllers
+namespace PrintProcessor.Controllers
 {
 	public class RepKitchenOrderSlipController
 	{

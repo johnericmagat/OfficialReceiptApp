@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace OfficialReceiptApp.Controllers
+namespace PrintProcessor.Controllers
 {
     public class RepDinningOrderSlipController
 	{

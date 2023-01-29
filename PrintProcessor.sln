@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficialReceiptApp", "OfficialReceiptApp.csproj", "{570C0EBD-40BE-4A6D-8F4A-7D963A814900}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintProcessor", "PrintProcessor.csproj", "{570C0EBD-40BE-4A6D-8F4A-7D963A814900}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

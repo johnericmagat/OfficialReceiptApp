@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using OfficialReceiptApp.Controllers;
-using OfficialReceiptApp.Models;
+using PrintProcessor.Controllers;
+using PrintProcessor.Models;
 using Squirrel;
 using System;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 
-namespace OfficialReceiptApp
+namespace PrintProcessor
 {
 	public partial class Form1 : Form
 	{

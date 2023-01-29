@@ -1,4 +1,4 @@
-﻿namespace OfficialReceiptApp
+﻿namespace PrintProcessor
 {
 	partial class Form1
 	{

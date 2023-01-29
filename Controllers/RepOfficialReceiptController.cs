@@ -6,7 +6,7 @@ using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 
-namespace OfficialReceiptApp.Controllers
+namespace PrintProcessor.Controllers
 {
 	public class RepOfficialReceiptController
 	{

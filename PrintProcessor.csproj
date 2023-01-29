@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{570C0EBD-40BE-4A6D-8F4A-7D963A814900}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OfficialReceiptApp</RootNamespace>
-    <AssemblyName>OfficialReceiptApp</AssemblyName>
+    <RootNamespace>PrintProcessor</RootNamespace>
+    <AssemblyName>PrintProcessor</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -120,6 +120,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Data\EasyRestaurantDB.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
