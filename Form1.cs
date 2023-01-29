@@ -56,7 +56,7 @@ namespace PrintProcessor
 				}
 				if (updated)
 				{
-					UpdateManager.RestartApp("OfficialReceiptApp.exe");
+					UpdateManager.RestartApp("PrintProcessor.exe");
 				}
 			}
 			catch
