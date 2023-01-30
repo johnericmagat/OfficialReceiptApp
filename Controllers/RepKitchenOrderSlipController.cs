@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace PrintProcessor.Controllers
 {
-	public class RepKitchenOrderSlipController
+    public class RepKitchenOrderSlipController
 	{
         // ============
         // Data Context
@@ -49,7 +45,7 @@ namespace PrintProcessor.Controllers
                 };
 
                 PrintDocument pd = new PrintDocument();
-                pd.PrintPage += new PrintPageEventHandler(PrintKitchenPage);
+                pd.PrintPage += new PrintPageEventHandler(PrintKitchenOrderSlipPage);
                 pd.PrinterSettings = ps;
                 pd.Print();
 
@@ -81,7 +77,7 @@ namespace PrintProcessor.Controllers
         // ==========
         // Print Page
         // ==========
-        public void PrintKitchenPage(object sender, PrintPageEventArgs e)
+        public void PrintKitchenOrderSlipPage(object sender, PrintPageEventArgs e)
         {
             // =============
             // Font Settings

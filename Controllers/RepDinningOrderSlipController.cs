@@ -46,7 +46,7 @@ namespace PrintProcessor.Controllers
                 };
 
                 PrintDocument pd = new PrintDocument();
-                pd.PrintPage += new PrintPageEventHandler(PrintOrderSlipPage);
+                pd.PrintPage += new PrintPageEventHandler(PrintDinningOrderSlipPage);
                 pd.PrinterSettings = ps;
                 pd.Print();
 
@@ -81,7 +81,7 @@ namespace PrintProcessor.Controllers
 		// ==========
 		// Print Page
 		// ==========
-		public void PrintOrderSlipPage(object sender, PrintPageEventArgs e)
+		public void PrintDinningOrderSlipPage(object sender, PrintPageEventArgs e)
         {
          
             // =============
