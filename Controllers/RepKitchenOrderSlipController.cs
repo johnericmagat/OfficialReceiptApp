@@ -28,7 +28,7 @@ namespace PrintProcessor.Controllers
         // =============
         // Print Receipt
         // =============
-        public void PrintKOS(int salesId, int terminalId, string type, string printerName)
+        public void PrintKitchenOrderSlip(int salesId, int terminalId, string type, string printerName)
         {
             try
             {

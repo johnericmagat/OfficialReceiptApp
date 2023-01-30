@@ -86,13 +86,15 @@ namespace PrintProcessor
 					RepBilloutReceiptController repBilloutReceiptController = new RepBilloutReceiptController();
 					repBilloutReceiptController.PrintBillReceipt(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
 				}
-				else
+				else if (deserializedJson.Type == "KOS")
 				{
 					RepKitchenOrderSlipController repKitchenOrderSlipController = new RepKitchenOrderSlipController();
-					repKitchenOrderSlipController.PrintKOS(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
-
+					repKitchenOrderSlipController.PrintKitchenOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+				}
+				else
+				{
 					RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
-					repDinningOrderSlipController.PrintDOS(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+					repDinningOrderSlipController.PrintDinningOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
                 }
 
 				if (File.Exists(Path.Combine(textFileLocation, file.Name))) File.Delete(Path.Combine(textFileLocation, file.Name));

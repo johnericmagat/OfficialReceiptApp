@@ -29,7 +29,7 @@ namespace PrintProcessor.Controllers
 		// =============
 		// Print Receipt
 		// =============
-		public void PrintDOS(int salesId, int terminalId, string type, string printerName)
+		public void PrintDinningOrderSlip(int salesId, int terminalId, string type, string printerName)
         {
             try
             {
