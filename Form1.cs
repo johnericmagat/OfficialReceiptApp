@@ -88,19 +88,11 @@ namespace PrintProcessor
 				}
 				else
 				{
-					//print KOS
-					//print DOS
+					RepKitchenOrderSlipController repKitchenOrderSlipController = new RepKitchenOrderSlipController();
+					repKitchenOrderSlipController.PrintKOS(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
 
-					if (deserializedJson.Type == "KOS")
-					{
-                        RepKitchenOrderSlipController repKitchenOrderSlipController = new RepKitchenOrderSlipController();
-                        repKitchenOrderSlipController.PrintKOS(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
-                    }
-                    else if (deserializedJson.Type == "DOS")
-					{
-                        RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
-                        repDinningOrderSlipController.PrintDOS(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
-                    }
+					RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
+					repDinningOrderSlipController.PrintDOS(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
                 }
 
 				if (File.Exists(Path.Combine(textFileLocation, file.Name))) File.Delete(Path.Combine(textFileLocation, file.Name));
