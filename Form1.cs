@@ -30,7 +30,7 @@ namespace PrintProcessor
 			FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
 
 			string versionNumber = fileVersionInfo.FileVersion.ToString();
-			this.Text += $"Official Receipt v.{versionNumber}";
+			this.Text += $"Print Processor v.{versionNumber}";
 		}
 
 		string installerLocation = ConfigurationManager.AppSettings["installerLocation"].ToString();
