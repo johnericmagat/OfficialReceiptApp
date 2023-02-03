@@ -76,26 +76,32 @@ namespace PrintProcessor
 				string text = File.ReadAllText(Path.Combine(textFileLocation, file.Name));
 				RepTextFileModel deserializedJson = JsonConvert.DeserializeObject<RepTextFileModel>(text);
 
-				if (deserializedJson.Type == "OR")
+				DateTime currentDate = DateTime.Now.Date;
+				DateTime entryDateTime = Convert.ToDateTime(deserializedJson.EntryDateTime.ToString());
+
+				if (entryDateTime == currentDate)
 				{
-					RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
-					repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, false);
+					if (deserializedJson.Type == "OR")
+					{
+						RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
+						repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, false);
+					}
+					else if (deserializedJson.Type == "BR")
+					{
+						RepBilloutReceiptController repBilloutReceiptController = new RepBilloutReceiptController();
+						repBilloutReceiptController.PrintBillReceipt(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+					}
+					else if (deserializedJson.Type == "KOS")
+					{
+						RepKitchenOrderSlipController repKitchenOrderSlipController = new RepKitchenOrderSlipController();
+						repKitchenOrderSlipController.PrintKitchenOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+					}
+					else
+					{
+						RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
+						repDinningOrderSlipController.PrintDinningOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+					}
 				}
-				else if (deserializedJson.Type == "BR")
-				{
-					RepBilloutReceiptController repBilloutReceiptController = new RepBilloutReceiptController();
-					repBilloutReceiptController.PrintBillReceipt(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
-				}
-				else if (deserializedJson.Type == "KOS")
-				{
-					RepKitchenOrderSlipController repKitchenOrderSlipController = new RepKitchenOrderSlipController();
-					repKitchenOrderSlipController.PrintKitchenOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
-				}
-				else
-				{
-					RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
-					repDinningOrderSlipController.PrintDinningOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
-                }
 
 				if (File.Exists(Path.Combine(textFileLocation, file.Name))) File.Delete(Path.Combine(textFileLocation, file.Name));
 			}

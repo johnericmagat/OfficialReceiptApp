@@ -9,5 +9,6 @@ namespace PrintProcessor.Models
 		public Int32 TerminalId { get; set; }
 		public String Type { get; set; }
 		public String Printer { get; set; }
+		public String EntryDateTime { get; set; }
 	}
 }
