@@ -84,22 +84,22 @@ namespace PrintProcessor
 					if (deserializedJson.Type == "OR")
 					{
 						RepOfficialReceiptController repOfficialReceiptController = new RepOfficialReceiptController();
-						repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, false);
+						repOfficialReceiptController.PrintOfficialReceipt(deserializedJson.SalesId, deserializedJson.CollectionId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, false, deserializedJson.GeneralSettings);
 					}
 					else if (deserializedJson.Type == "BR")
 					{
 						RepBilloutReceiptController repBilloutReceiptController = new RepBilloutReceiptController();
-						repBilloutReceiptController.PrintBillReceipt(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+						repBilloutReceiptController.PrintBillReceipt(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, deserializedJson.GeneralSettings);
 					}
 					else if (deserializedJson.Type == "KOS")
 					{
 						RepKitchenOrderSlipController repKitchenOrderSlipController = new RepKitchenOrderSlipController();
-						repKitchenOrderSlipController.PrintKitchenOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+						repKitchenOrderSlipController.PrintKitchenOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, deserializedJson.GeneralSettings);
 					}
 					else
 					{
 						RepDinningOrderSlipController repDinningOrderSlipController = new RepDinningOrderSlipController();
-						repDinningOrderSlipController.PrintDinningOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer);
+						repDinningOrderSlipController.PrintDinningOrderSlip(deserializedJson.SalesId, deserializedJson.TerminalId, deserializedJson.Type, deserializedJson.Printer, deserializedJson.GeneralSettings);
 					}
 				}
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PrintProcessor.Models;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
@@ -25,11 +27,18 @@ namespace PrintProcessor.Controllers
 		private string _printer = "";
 		private bool _isReprinted = false;
 		private bool useDefaultPrinter = Boolean.Parse(ConfigurationManager.AppSettings["useDefaultPrinter"].ToString());
+        private string _companyName = "";
+		private string _address = "";
+		private string _tin = "";
+        private string _serialNo = "";
+        private string _machineNo = "";
+		private string _Receipfooter = "";
 
-		// =============
-		// Print Receipt
-		// =============
-		public void PrintOfficialReceipt(int salesId, int collectionId, int terminalId, string type, string printerName, bool isReprint)
+
+        // =============
+        // Print Receipt
+        // =============
+        public void PrintOfficialReceipt(int salesId, int collectionId, int terminalId, string type, string printerName, bool isReprint, List<SysGeneralSettingsModel> generalSettingsList)
 		{
 			try
 			{
@@ -39,6 +48,16 @@ namespace PrintProcessor.Controllers
 				_type = type;
 				_printer = printerName;
 				_isReprinted = isReprint;
+
+				for(int i = 0; i < generalSettingsList.Count(); i++)
+				{
+					_companyName = generalSettingsList[i].CompanyName;
+					_address = generalSettingsList[i].Address;
+					_tin = generalSettingsList[i].TIN;
+					_serialNo = generalSettingsList[i].SerialNo;
+					_machineNo = generalSettingsList[i].MachineNo;
+                    _Receipfooter = generalSettingsList[i].ReceiptFooter;
+				}
 				
 				if (useDefaultPrinter) this.GetDefaultPrinter();
 
@@ -124,12 +143,12 @@ namespace PrintProcessor.Controllers
 			// ==============
 			// System Current
 			// ==============
-			//var systemCurrent = Modules.SysCurrentModule.GetCurrentSettings();
+			//var systemCurrent = _generalSettingsModel.GeneralSettings.ToList();
 
-			// ============
-			// Company Name
-			// ============
-			String companyName = "ABC Company";
+            // ============
+            // Company Name
+            // ============
+            String companyName = _companyName;
 
 			float adjustStringName = 1;
 			if (companyName.Length > 43)
@@ -144,7 +163,7 @@ namespace PrintProcessor.Controllers
 			// Company Address
 			// ===============
 
-			String companyAddress = "Unit 1001B 10/F Keppel Center, Cebu Business Park, Cebu City, 6000, Philippines";
+			String companyAddress = _address;
 
 			// float adjustStringAddress = 1;
 			//if (companyAddress.Length > 40)
@@ -189,7 +208,7 @@ namespace PrintProcessor.Controllers
 			// ==========
 			// TIN Number
 			// ==========
-			String TINNumber = "1234";
+			String TINNumber = _tin;
 			graphics.DrawString("TIN: " + TINNumber, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 			y += graphics.MeasureString(companyAddress, fontArial8Regular).Height;
 
@@ -201,14 +220,14 @@ namespace PrintProcessor.Controllers
 			{
 				adjustStringSerialNo = 3;
 			}
-			String serialNo = "5678";
+			String serialNo = _serialNo;
 			graphics.DrawString("SN: " + serialNo, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 			y += graphics.MeasureString(companyAddress, fontArial8Regular).Height;
 
 			// ==============
 			// Machine Number
 			// ==============
-			String machineNo = "9101";
+			String machineNo = _machineNo;
 			graphics.DrawString("MIN: " + machineNo, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 			y += graphics.MeasureString(companyAddress, fontArial8Regular).Height;
 
@@ -699,7 +718,7 @@ namespace PrintProcessor.Controllers
 					Point twelvethLineSecondPoint = new Point(500, Convert.ToInt32(y) + 5);
 					graphics.DrawLine(blackPen, twelvethLineFirstPoint, twelvethLineSecondPoint);
 
-					String receiptFooter = "\n" + "Footer";
+					String receiptFooter = "\n" + _Receipfooter;
 					graphics.DrawString(receiptFooter, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 					y += graphics.MeasureString(receiptFooter, fontArial8Regular).Height;
 				}

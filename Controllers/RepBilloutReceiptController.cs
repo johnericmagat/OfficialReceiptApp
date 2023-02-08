@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PrintProcessor.Models;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
@@ -23,11 +25,19 @@ namespace PrintProcessor.Controllers
 		private string _type = "";
 		private string _printer = "";
 		private bool useDefaultPrinter = Boolean.Parse(ConfigurationManager.AppSettings["useDefaultPrinter"].ToString());
+        private string _companyName = "";
+        private string _address = "";
+        private string _tin = "";
+        private string _serialNo = "";
+        private string _machineNo = "";
+        private string _receipfooter = "";
+        private string _orTitle = "";
+        private string _printerType = "";
 
-		// =============
-		// Print Receipt
-		// =============
-		public void PrintBillReceipt(int salesId, int terminalId, string type, string printerName)
+        // =============
+        // Print Receipt
+        // =============
+        public void PrintBillReceipt(int salesId, int terminalId, string type, string printerName, List<SysGeneralSettingsModel> generalSettingsList)
         {
             try
             {
@@ -36,7 +46,20 @@ namespace PrintProcessor.Controllers
 				_type = type;
 				_printer = printerName;
 
-				if (useDefaultPrinter) this.GetDefaultPrinter();
+
+                for (int i = 0; i < generalSettingsList.Count(); i++)
+                {
+                    _companyName = generalSettingsList[i].CompanyName;
+                    _address = generalSettingsList[i].Address;
+                    _tin = generalSettingsList[i].TIN;
+                    _serialNo = generalSettingsList[i].SerialNo;
+                    _machineNo = generalSettingsList[i].MachineNo;
+                    _receipfooter = generalSettingsList[i].ReceiptFooter;
+                    _orTitle = generalSettingsList[i].ORPrintTitle;
+                    _printerType = generalSettingsList[i].PrinterType;
+                }
+
+                if (useDefaultPrinter) this.GetDefaultPrinter();
 
 				PrinterSettings ps = new PrinterSettings
                 {
@@ -129,7 +152,7 @@ namespace PrintProcessor.Controllers
             // ============
             // Company Name
             // ============
-            String companyName = "ABC Company";
+            String companyName = _companyName;
 
             float adjustStringName = 1;
             if (companyName.Length > 43)
@@ -144,7 +167,7 @@ namespace PrintProcessor.Controllers
             // Company Address
             // ===============
 
-            String companyAddress = "Keppel";
+            String companyAddress = _address;
 
             float adjustStringAddress = 1;
             if (companyAddress.Length > 25)
@@ -157,21 +180,21 @@ namespace PrintProcessor.Controllers
             // ==========
             // TIN Number
             // ==========
-            String TINNumber = "1234";
+            String TINNumber = _tin;
             graphics.DrawString("TIN: " + TINNumber, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(companyAddress, fontArial8Regular).Height;
 
             // =============
             // Serial Number
             // =============
-            String serialNo = "1234";
+            String serialNo = _serialNo;
             graphics.DrawString("SN: " + serialNo, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(companyAddress, fontArial8Regular).Height;
 
             // ==============
             // Machine Number
             // ==============
-            String machineNo = "1234";
+            String machineNo = _machineNo;
             graphics.DrawString("MIN: " + machineNo, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(companyAddress, fontArial8Regular).Height;
 
@@ -179,7 +202,7 @@ namespace PrintProcessor.Controllers
             // Official Receipt Title
             // ======================
             //String officialReceiptTitle = systemCurrent.ORPrintTitle ;
-            String officialReceiptTitle = "B I L L";
+            String officialReceiptTitle = _orTitle;
             graphics.DrawString(officialReceiptTitle, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(officialReceiptTitle, fontArial8Regular).Height;
 
@@ -327,14 +350,14 @@ namespace PrintProcessor.Controllers
                             Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericTypographic).Height))
                         };
                         graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
-                        //if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
-                        //{
-                        //    graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
-                        //}
-                        //else
-                        //{
+                        if (_printerType == "Dot Matrix Printer")
+                        {
+                            graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
+                        }
+                        else
+                        {
                             graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 250.0F, height), drawFormatRight);
-                        //}
+                        }
                         y += itemDataRectangle.Size.Height + 3.0F;
                     }
                 }
@@ -400,19 +423,19 @@ namespace PrintProcessor.Controllers
             graphics.DrawLine(blackPen, thirdLineFirstPoint, thirdLineSecondPoint);
 
 
-            String receiptFooter = "\n" + "Receipt Footer";
+            String receiptFooter = "\n" + _orTitle;
             graphics.DrawString(receiptFooter, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(receiptFooter, fontArial8Regular).Height;
-            //if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
-            //{
-              //  String space = "\n\n\n\n\n\n\n\n\n\n.";
-              //  graphics.DrawString(space, fontArial8Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
-            //}
-            //else
-            //{
+            if (_printerType == "Dot Matrix Printer")
+            {
+                String space = "\n\n\n\n\n\n\n\n\n\n.";
+                graphics.DrawString(space, fontArial8Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
+            }
+            else
+            {
                 String space = "\n\n\n.";
                 graphics.DrawString(space, fontArial8Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
-            //}
+            }
         }
     }
 }

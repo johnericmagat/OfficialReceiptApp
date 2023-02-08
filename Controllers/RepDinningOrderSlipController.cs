@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PrintProcessor.Models;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
@@ -25,11 +27,20 @@ namespace PrintProcessor.Controllers
 		private string _type = "";
 		private string _printer = "";
 		private bool useDefaultPrinter = Boolean.Parse(ConfigurationManager.AppSettings["useDefaultPrinter"].ToString());
+        private string _companyName = "";
+        private string _address = "";
+        private string _tin = "";
+        private string _serialNo = "";
+        private string _machineNo = "";
+        private string _receipfooter = "";
+        private string _orTitle = "";
+        private string _printerType = "";
+        private string _invoicefooter = "";
 
-		// =============
-		// Print Receipt
-		// =============
-		public void PrintDinningOrderSlip(int salesId, int terminalId, string type, string printerName)
+        // =============
+        // Print Receipt
+        // =============
+        public void PrintDinningOrderSlip(int salesId, int terminalId, string type, string printerName, List<SysGeneralSettingsModel> generalSettingsList)
         {
             try
             {
@@ -38,7 +49,20 @@ namespace PrintProcessor.Controllers
 				_type = type;
 				_printer = printerName;
 
-				if (useDefaultPrinter) this.GetDefaultPrinter();
+                for (int i = 0; i < generalSettingsList.Count(); i++)
+                {
+                    _companyName = generalSettingsList[i].CompanyName;
+                    _address = generalSettingsList[i].Address;
+                    _tin = generalSettingsList[i].TIN;
+                    _serialNo = generalSettingsList[i].SerialNo;
+                    _machineNo = generalSettingsList[i].MachineNo;
+                    _receipfooter = generalSettingsList[i].ReceiptFooter;
+                    _orTitle = generalSettingsList[i].ORPrintTitle;
+                    _printerType = generalSettingsList[i].PrinterType;
+                    _invoicefooter = generalSettingsList[i].InvoiceFooter;
+                }
+
+                if (useDefaultPrinter) this.GetDefaultPrinter();
 
 				PrinterSettings ps = new PrinterSettings
                 {
@@ -144,7 +168,7 @@ namespace PrintProcessor.Controllers
             // ============
             // Company Name
             // ============
-            String companyName = "ABC Company";
+            String companyName = _companyName;
             float adjustStringName = 1;
             if (companyName.Length > 43)
             {
@@ -158,7 +182,7 @@ namespace PrintProcessor.Controllers
             // Company Address
             // ===============
 
-            String companyAddress = "Keppel";
+            String companyAddress = _address;
 
             float adjuctHeight = 1;
             if (companyAddress.Length > 43)
@@ -172,21 +196,21 @@ namespace PrintProcessor.Controllers
             // ==========
             // TIN Number
             // ==========
-            String TINNumber = "1234";
+            String TINNumber = _tin;
             graphics.DrawString("TIN: " + TINNumber, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(companyAddress, fontArial8Regular, Convert.ToInt32(width)).Height;
 
             // =============
             // Serial Number
             // =============
-            String serialNo = "1234";
+            String serialNo = _serialNo;
             graphics.DrawString("SN: " + serialNo, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(companyAddress, fontArial8Regular, Convert.ToInt32(width)).Height;
 
             // ==============
             // Machine Number
             // ==============
-            String machineNo = "1234";
+            String machineNo = _machineNo;
             graphics.DrawString("MIN: " + machineNo, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(companyAddress, fontArial8Regular, Convert.ToInt32(width)).Height;
 
@@ -604,7 +628,7 @@ namespace PrintProcessor.Controllers
                     Point sixthLineSecondPoint = new Point(500, Convert.ToInt32(y) + 5);
                     graphics.DrawLine(blackPen, sixthLineFirstPoint, sixthLineSecondPoint);
 
-                    String salesInvoiceFooter = "\n" + "Invoice Footer";
+                    String salesInvoiceFooter = "\n" + _invoicefooter;
                     graphics.DrawString(salesInvoiceFooter, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
                     y += graphics.MeasureString(salesInvoiceFooter, fontArial8Regular).Height + 10F;
 

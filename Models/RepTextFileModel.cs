@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PrintProcessor.Models
 {
@@ -10,5 +11,6 @@ namespace PrintProcessor.Models
 		public String Type { get; set; }
 		public String Printer { get; set; }
 		public String EntryDateTime { get; set; }
-	}
+        public List<SysGeneralSettingsModel> GeneralSettings { get; set; }
+    }
 }
