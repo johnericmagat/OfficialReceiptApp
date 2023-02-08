@@ -202,7 +202,7 @@ namespace PrintProcessor.Controllers
             // Official Receipt Title
             // ======================
             //String officialReceiptTitle = systemCurrent.ORPrintTitle ;
-            String officialReceiptTitle = _orTitle;
+            String officialReceiptTitle = "P A R T I A L   B I L L";
             graphics.DrawString(officialReceiptTitle, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(officialReceiptTitle, fontArial8Regular).Height;
 
