@@ -632,16 +632,16 @@ namespace PrintProcessor.Controllers
                     graphics.DrawString(salesInvoiceFooter, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
                     y += graphics.MeasureString(salesInvoiceFooter, fontArial8Regular).Height + 10F;
 
-                    Zen.Barcode.CodeQrBarcodeDraw codeQrBarcodeDraw = Zen.Barcode.BarcodeDrawFactory.CodeQr;
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Size = new Size(100, 100);
-                    pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pictureBox.Image = codeQrBarcodeDraw.Draw(sales.FirstOrDefault().SalesNumber, 50);
+                    //Zen.Barcode.CodeQrBarcodeDraw codeQrBarcodeDraw = Zen.Barcode.BarcodeDrawFactory.CodeQr;
+                    //PictureBox pictureBox = new PictureBox();
+                    //pictureBox.Size = new Size(100, 100);
+                    //pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    //pictureBox.Image = codeQrBarcodeDraw.Draw(sales.FirstOrDefault().SalesNumber, 50);
 
-                    Bitmap bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
-                    pictureBox.DrawToBitmap(bmp, new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
-                    graphics.DrawImage(bmp, x + 70, y + 15);
-                    y += bmp.Height + 7;
+                    //Bitmap bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+                    //pictureBox.DrawToBitmap(bmp, new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
+                    //graphics.DrawImage(bmp, x + 70, y + 15);
+                    //y += bmp.Height + 7;
                 }
             }
 
