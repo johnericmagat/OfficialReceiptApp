@@ -412,7 +412,7 @@ namespace PrintProcessor.Controllers
 								totalVATZeroRated += (salesLine.Price * salesLine.Quantity) - salesLine.DiscountAmount;
 							}
 
-							String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString() + " " + salesLine.Unit + " @ " + salesLine.Price.ToString();
+							String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("#,##0.00") + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00");
 							Decimal itemAmountData = salesLine.Price * salesLine.Quantity;
 							RectangleF itemDataRectangle = new RectangleF
 							{

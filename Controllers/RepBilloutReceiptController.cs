@@ -423,7 +423,7 @@ namespace PrintProcessor.Controllers
             graphics.DrawLine(blackPen, thirdLineFirstPoint, thirdLineSecondPoint);
 
 
-            String receiptFooter = "\n" + _orTitle;
+            String receiptFooter = "\n" + "P A R T I A L   B I L L";
             graphics.DrawString(receiptFooter, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
             y += graphics.MeasureString(receiptFooter, fontArial8Regular).Height;
             if (_printerType == "Dot Matrix Printer")
