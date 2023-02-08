@@ -104,6 +104,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\RepTextFileModel.cs" />
+    <Compile Include="Models\SysGeneralSettingsModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Data\EasyRestaurantDB.dbml.layout">

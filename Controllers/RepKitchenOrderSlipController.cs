@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Mono.Cecil;
+using PrintProcessor.Models;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 
 namespace PrintProcessor.Controllers
 {
@@ -24,11 +28,20 @@ namespace PrintProcessor.Controllers
         private string _type = "";
         private string _printer = "";
         private bool useDefaultPrinter = Boolean.Parse(ConfigurationManager.AppSettings["useDefaultPrinter"].ToString());
+        private string _companyName = "";
+        private string _address = "";
+        private string _tin = "";
+        private string _serialNo = "";
+        private string _machineNo = "";
+        private string _receipfooter = "";
+        private string _orTitle = "";
+        private string _printerType = "";
+        private string _invoicefooter = "";
 
         // =============
         // Print Receipt
         // =============
-        public void PrintKitchenOrderSlip(int salesId, int terminalId, string type, string printerName)
+        public void PrintKitchenOrderSlip(int salesId, int terminalId, string type, string printerName, List<SysGeneralSettingsModel> generalSettingsList)
         {
             try
             {
@@ -36,6 +49,20 @@ namespace PrintProcessor.Controllers
                 _terminalId = terminalId;
                 _type = type;
                 _printer = printerName;
+
+
+                for (int i = 0; i < generalSettingsList.Count(); i++)
+                {
+                    _companyName = generalSettingsList[i].CompanyName;
+                    _address = generalSettingsList[i].Address;
+                    _tin = generalSettingsList[i].TIN;
+                    _serialNo = generalSettingsList[i].SerialNo;
+                    _machineNo = generalSettingsList[i].MachineNo;
+                    _receipfooter = generalSettingsList[i].ReceiptFooter;
+                    _orTitle = generalSettingsList[i].ORPrintTitle;
+                    _printerType = generalSettingsList[i].PrinterType;
+                    _invoicefooter = generalSettingsList[i].InvoiceFooter;
+                }
 
                 if (useDefaultPrinter) this.GetDefaultPrinter();
 
