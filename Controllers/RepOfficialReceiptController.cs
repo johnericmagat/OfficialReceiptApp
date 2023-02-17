@@ -705,7 +705,7 @@ namespace PrintProcessor.Controllers
 					Point twelvethLineSecondPoint = new Point(500, Convert.ToInt32(y) + 18);
 					graphics.DrawLine(blackPen, twelvethLineFirstPoint, twelvethLineSecondPoint);
 
-					String receiptFooter = "\n" + "Receipt Footer";
+					String receiptFooter = "\n\n" + _Receipfooter;
 					graphics.DrawString(receiptFooter, fontArial8Regular, drawBrush, new RectangleF(x, y + 5, width, height), drawFormatCenter);
 					y += graphics.MeasureString(receiptFooter, fontArial8Regular).Height;
 				}
@@ -718,13 +718,13 @@ namespace PrintProcessor.Controllers
 					Point twelvethLineSecondPoint = new Point(500, Convert.ToInt32(y) + 5);
 					graphics.DrawLine(blackPen, twelvethLineFirstPoint, twelvethLineSecondPoint);
 
-					String receiptFooter = "\n" + _Receipfooter;
+					String receiptFooter = "\n\n" + _Receipfooter;
 					graphics.DrawString(receiptFooter, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 					y += graphics.MeasureString(receiptFooter, fontArial8Regular).Height;
 				}
 			}
 
-			String space = "\nThank you and come again!";
+			String space = "\n\n\n\n\n\n\n\n\nThank you and come again!";
 			graphics.DrawString(space, fontArial8Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatCenter);
 		}
 	}
