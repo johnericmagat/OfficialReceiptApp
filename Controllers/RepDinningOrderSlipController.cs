@@ -22,7 +22,6 @@ namespace PrintProcessor.Controllers
 		// Global Variables
 		// ================
 		private int _salesId = 0;
-		private int _collectionId = 0;
 		private int _terminalId = 0;
 		private string _type = "";
 		private string _printer = "";
