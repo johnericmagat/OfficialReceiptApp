@@ -145,7 +145,7 @@ namespace PrintProcessor.Controllers
             //else
             //{
                 x = 5; y = 5;
-                width = 170.0F; height = 0F;
+                width = 250.0F; height = 0F;
             //}
             // ==============
             // Tools Settings
@@ -262,7 +262,7 @@ namespace PrintProcessor.Controllers
                     String itemLabel = "\nITEM";
                     String amountLabel = "\nAMOUNT";
                     graphics.DrawString(itemLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(amountLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(amountLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, 240.0F, height), drawFormatRight);
                     y += graphics.MeasureString(itemLabel, fontArial8Regular).Height + 5.0F;
 
                     var salesLines = from d in db.TrnSalesLines where d.SalesId == _salesId select d;
@@ -321,8 +321,8 @@ namespace PrintProcessor.Controllers
 
                                 totalAmount += salesLine.Amount;
 
-                                String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("#,##0.00") + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00") + " - " + salesLine.MstTax.Code[0];
-                                String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("#,##0.00");
+                                String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00") + " - " + salesLine.MstTax.Code[0];
+                                String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
                                     X = x,
@@ -330,7 +330,7 @@ namespace PrintProcessor.Controllers
                                     Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericDefault).Height))
                                 };
                                 graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
-                                graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 170.0F, height), drawFormatRight);
+                                graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 240.0F, height), drawFormatRight);
                                 y += itemDataRectangle.Size.Height + 3.0F;
                             }
                         }
@@ -347,15 +347,15 @@ namespace PrintProcessor.Controllers
                     // Total Amount
                     // ============
                     String totalSalesLabel = "\nTotal Amount";
-                    String totalSalesAmount = "\n" + totalAmount.ToString("#,##0.00");
+                    String totalSalesAmount = "\n" + totalAmount.ToString("N2", CultureInfo.InvariantCulture);
                     graphics.DrawString(totalSalesLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(totalSalesAmount, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(totalSalesAmount, fontArial8Regular, drawBrush, new RectangleF(x, y, 240.0F, height), drawFormatRight);
                     y += graphics.MeasureString(totalSalesAmount, fontArial8Regular).Height;
 
                     String totalNumberOfItemsLabel = "Total No. of Item(s)";
-                    String totalNumberOfItemsQuantity = totalNumberOfItems.ToString("#,##0.00");
+                    String totalNumberOfItemsQuantity = totalNumberOfItems.ToString("N2", CultureInfo.InvariantCulture);
                     graphics.DrawString(totalNumberOfItemsLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(totalNumberOfItemsQuantity, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(totalNumberOfItemsQuantity, fontArial8Regular, drawBrush, new RectangleF(x, y, 240.0F, height), drawFormatRight);
                     y += graphics.MeasureString(totalNumberOfItemsQuantity, fontArial8Regular).Height;
 
                     // ========
@@ -395,7 +395,7 @@ namespace PrintProcessor.Controllers
                     String cashierLabel = "\nTeller";
                     String cashierUserData = "\n" + cashier;
                     graphics.DrawString(cashierLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(cashierUserData, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(cashierUserData, fontArial8Regular, drawBrush, new RectangleF(x, y, 240.0F, height), drawFormatRight);
                     y += graphics.MeasureString(cashierUserData, fontArial8Regular).Height;
 
                     // ========
@@ -477,7 +477,7 @@ namespace PrintProcessor.Controllers
                     String itemLabel = "\nITEM";
                     String amountLabel = "\nAMOUNT";
                     graphics.DrawString(itemLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(amountLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(amountLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                     y += graphics.MeasureString(itemLabel, fontArial8Regular).Height + 5.0F;
 
                     var salesLines = from d in db.TrnSalesLines where d.SalesId == _salesId select d;
@@ -536,8 +536,8 @@ namespace PrintProcessor.Controllers
 
                                 totalAmount += salesLine.Amount;
 
-                                String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("#,##0.00") + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00");
-                                String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("#,##0.00");
+                                String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00");
+                                String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
                                     X = x,
@@ -551,7 +551,7 @@ namespace PrintProcessor.Controllers
                                 //}
                                 //else
                                 //{
-                                    graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 255.0F, height), drawFormatRight);
+                                    graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                                 //}
                                 y += itemDataRectangle.Size.Height + 3.0F;
                             }
@@ -569,15 +569,15 @@ namespace PrintProcessor.Controllers
                     // Total Amount
                     // ============
                     String totalSalesLabel = "\nTotal Amount";
-                    String totalSalesAmount = "\n" + totalAmount.ToString("#,##0.00");
+                    String totalSalesAmount = "\n" + totalAmount.ToString("N2", CultureInfo.InvariantCulture);
                     graphics.DrawString(totalSalesLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(totalSalesAmount, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(totalSalesAmount, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                     y += graphics.MeasureString(totalSalesAmount, fontArial8Regular).Height;
 
                     String totalNumberOfItemsLabel = "Total No. of Item(s)";
-                    String totalNumberOfItemsQuantity = totalNumberOfItems.ToString("#,##0.00");
+                    String totalNumberOfItemsQuantity = totalNumberOfItems.ToString("N2", CultureInfo.InvariantCulture);
                     graphics.DrawString(totalNumberOfItemsLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(totalNumberOfItemsQuantity, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(totalNumberOfItemsQuantity, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                     y += graphics.MeasureString(totalNumberOfItemsQuantity, fontArial8Regular).Height;
 
                     // ========
@@ -617,7 +617,7 @@ namespace PrintProcessor.Controllers
                     String cashierLabel = "\nTeller";
                     String cashierUserData = "\n" + cashier;
                     graphics.DrawString(cashierLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                    graphics.DrawString(cashierUserData, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                    graphics.DrawString(cashierUserData, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                     y += graphics.MeasureString(cashierUserData, fontArial8Regular).Height;
 
                     // ========

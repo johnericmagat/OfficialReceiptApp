@@ -149,7 +149,7 @@ namespace PrintProcessor.Controllers
             //else
            // {
                 x = 5; y = 5;
-                width = 170.0F; height = 0F;
+                width = 250.0F; height = 0F;
             //}
             // ==============
             // Tools Settings
@@ -310,7 +310,7 @@ namespace PrintProcessor.Controllers
                                 SL.Preparation = "";
                             }
 
-                            String itemData = SL.Quantity.ToString("#,##0.00") + " " + SL.MstUnit.Unit + " " + SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
+                            String itemData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + SL.MstUnit.Unit + " " + SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
                             //String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("#,##0.00");
                             RectangleF itemDataRectangle = new RectangleF
                             {
@@ -396,7 +396,7 @@ namespace PrintProcessor.Controllers
                 String cashierLabel = "\nTeller";
                 String cashierUserData = "\n" + cashier;
                 graphics.DrawString(cashierLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-                graphics.DrawString(cashierUserData, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatRight);
+                graphics.DrawString(cashierUserData, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                 y += graphics.MeasureString(cashierUserData, fontArial8Regular).Height;
 
                 //// ========
