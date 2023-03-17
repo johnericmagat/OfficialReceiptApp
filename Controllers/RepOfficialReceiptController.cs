@@ -649,9 +649,11 @@ namespace PrintProcessor.Controllers
 				Point ninethLineSecondPoint = new Point(500, Convert.ToInt32(y) + 5);
 				graphics.DrawLine(blackPen, ninethLineFirstPoint, ninethLineSecondPoint);
 
-				String remarks = "\nRemarks: \n\n " + collections.FirstOrDefault().TrnSale.Remarks;
-				graphics.DrawString(remarks, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
-				y += graphics.MeasureString(remarks, fontArial8Regular).Height;
+				String remarks = "\nRemarks: ";
+				String remarksData = "\n\n\n" +collections.FirstOrDefault().TrnSale.Remarks;
+                graphics.DrawString(remarks, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
+                graphics.DrawString(remarksData, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatCenter);
+                y += graphics.MeasureString(remarksData, fontArial8Regular).Height + 15.0F;
 
 				//// =========
 				//// 10th Line
@@ -685,7 +687,7 @@ namespace PrintProcessor.Controllers
 					}
 					else if (collectionLine.OtherInformation != "NA" || collectionLine.OtherInformation != "")
 					{
-						String OtherInfo = "Other Information:" + "\n";
+						String OtherInfo = "\nOther Information:" + "\n";
 						graphics.DrawString(OtherInfo, fontArial8Regular, drawBrush, new RectangleF(x, y + 6, width, height), drawFormatLeft);
 						y += graphics.MeasureString(OtherInfo, fontArial8Regular).Height;
 						String OtherInfoData = collectionLine.MstPayType.PayType + " " + collectionLine.OtherInformation;
