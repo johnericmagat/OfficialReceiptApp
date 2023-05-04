@@ -315,19 +315,40 @@ namespace PrintProcessor.Controllers
 
                         if (salesLineGroupbyItem.Any())
                         {
-                            foreach (var salesLine in salesLineGroupbyItem.ToList())
+                            foreach (var salesLine in salesLines.OrderBy(d => d.ItemHeaderId))
                             {
                                 totalNumberOfItems += salesLine.Quantity;
 
                                 totalAmount += salesLine.Amount;
 
-                                String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00") + " - " + salesLine.MstTax.Code[0];
-                                String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                                var equalItemId = from s in db.MstItems
+                                                  where s.Id == salesLine.ItemId
+                                                  select s;
+
+                                String itemData = "";
+                                String itemAmountData = "";
+
+                                if (equalItemId.FirstOrDefault().Category == "Add-On")
+                                {
+                                    itemData = "     " + salesLine.MstItem.ItemDescription + "\n" + "      " + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " @ " + salesLine.Price.ToString("#,##0.00");
+                                    itemAmountData = "\n" + (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                                }
+                                else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
+                                {
+                                    itemData = "     " + salesLine.MstItem.ItemDescription;
+                                }
+                                else
+                                {
+                                    itemData = salesLine.MstItem.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " @ " + salesLine.Price.ToString("#,##0.00");
+                                    itemAmountData = "\n" + (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                                }
+
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
                                     X = x,
                                     Y = y,
-                                    Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericDefault).Height))
+                                    Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericTypographic).Height)),
+                                    Width = width
                                 };
                                 graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
                                 graphics.DrawString(itemAmountData, fontArial8Regular, drawBrush, new RectangleF(x, y, 240.0F, height), drawFormatRight);
@@ -530,19 +551,40 @@ namespace PrintProcessor.Controllers
 
                         if (salesLineGroupbyItem.Any())
                         {
-                            foreach (var salesLine in salesLineGroupbyItem.ToList())
+                            foreach (var salesLine in salesLines.OrderBy(d => d.ItemHeaderId))
                             {
                                 totalNumberOfItems += 1;
 
                                 totalAmount += salesLine.Amount;
 
-                                String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00");
-                                String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                                var equalItemId = from s in db.MstItems
+                                                  where s.Id == salesLine.ItemId
+                                                  select s;
+
+                                String itemData = "";
+                                String itemAmountData = "";
+
+                                if (equalItemId.FirstOrDefault().Category == "Add-On")
+                                {
+                                    itemData = "     " + salesLine.MstItem.ItemDescription + "\n" + "      " + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " @ " + salesLine.Price.ToString("#,##0.00");
+                                    itemAmountData = "\n" + (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                                }
+                                else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
+                                {
+                                    itemData = "     " + salesLine.MstItem.ItemDescription;
+                                }
+                                else
+                                {
+                                    itemData = salesLine.MstItem.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " @ " + salesLine.Price.ToString("#,##0.00");
+                                    itemAmountData = "\n" + (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                                }
+
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
                                     X = x,
                                     Y = y,
-                                    Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericDefault).Height))
+                                    Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericTypographic).Height)),
+                                    Width = width
                                 };
                                 graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
                                 //if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")

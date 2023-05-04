@@ -298,7 +298,7 @@ namespace PrintProcessor.Controllers
                                  select d;
                 //foreach (DataGridViewRow row in _orderPrintTable.Rows)
                 //{
-                    foreach (var SL in salesLines)
+                    foreach (var SL in salesLines.OrderBy(d => d.ItemHeaderId))
                     {
                         //if (Convert.ToInt32(row.Cells[0].Value) == SL.Id && Convert.ToBoolean(row.Cells[3].Value) == true)
                         //{
@@ -310,13 +310,31 @@ namespace PrintProcessor.Controllers
                                 SL.Preparation = "";
                             }
 
-                            String itemData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + SL.MstUnit.Unit + " " + SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
+                            var equalItemId = from s in db.MstItems
+                                              where s.Id == SL.ItemId
+                                              select s;
+
+                            String itemData = "";
+                            if (equalItemId.FirstOrDefault().Category == "Add-On")
+                            {
+                                itemData = "     " + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + SL.MstItem.ItemDescription + "\n" + "      *" + SL.Preparation;
+                            }
+                            else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
+                            {
+                                itemData = "     " + SL.MstItem.ItemDescription + "\n" + "      *" + SL.Preparation;
+                            }
+                            else
+                            {
+                                itemData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
+                            }
+
                             //String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("#,##0.00");
                             RectangleF itemDataRectangle = new RectangleF
                             {
                                 X = x,
                                 Y = y,
-                                Size = new Size(170, ((int)graphics.MeasureString(itemData, fontArial8Regular, 170, StringFormat.GenericDefault).Height))
+                                Size = new Size(170, ((int)graphics.MeasureString(itemData, fontArial8Regular, 170, StringFormat.GenericTypographic).Height)),
+                                Width = width
                             };
                             graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
                             y += itemDataRectangle.Size.Height + 3.0F;
