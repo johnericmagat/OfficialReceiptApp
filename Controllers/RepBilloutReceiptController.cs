@@ -307,14 +307,14 @@ namespace PrintProcessor.Controllers
 
                 if (salesLineGroupbyItem.Any())
                 {
-                    foreach (var salesLine in salesLineGroupbyItem.ToList())
+                    foreach (var salesLine in salesLines.OrderBy(d => d.ItemHeaderId))
                     {
                         totalNumberOfItems += 1;
                         totalGrossSales += salesLine.Price * salesLine.Quantity;
                         totalSales += salesLine.Amount;
                         totalDiscount += salesLine.DiscountAmount;
-                        totalServiceCharge = salesLine.ServiceChargeAmount;
-                        discountGiven = salesLine.Discount;
+                        totalServiceCharge = salesLine.TrnSale.ServiceChargeAmount;
+                        discountGiven = salesLine.MstDiscount.Discount;
                         if (salesLine.MstTax.Code == "VAT")
                         {
                             totalVATSales += (salesLine.Price * salesLine.Quantity) - ((salesLine.Price * salesLine.Quantity) / (1 + (salesLine.MstItem.MstTax1.Rate / 100)) * (salesLine.MstItem.MstTax1.Rate / 100));
@@ -328,8 +328,8 @@ namespace PrintProcessor.Controllers
                         {
                             if (salesLine.MstItem.MstTax1.Rate > 0)
                             {
-                                totalVATExempt += ((((salesLine.Price * salesLine.Quantity) / salesLine.Pax.GetValueOrDefault()) * salesLine.DiscountedPax.GetValueOrDefault()) / (1 + (salesLine.MstItem.MstTax1.Rate / 100)));
-                                lessVAT += ((((salesLine.Price * salesLine.Quantity) / salesLine.Pax.GetValueOrDefault()) * salesLine.DiscountedPax.GetValueOrDefault()) / (1 + (salesLine.MstItem.MstTax1.Rate / 100)) * (salesLine.MstItem.MstTax1.Rate / 100));
+                                totalVATExempt += ((((salesLine.Price * salesLine.Quantity) / salesLine.TrnSale.Pax.GetValueOrDefault()) * salesLine.TrnSale.DiscountedPax.GetValueOrDefault()) / (1 + (salesLine.MstItem.MstTax1.Rate / 100)));
+                                lessVAT += ((((salesLine.Price * salesLine.Quantity) / salesLine.TrnSale.Pax.GetValueOrDefault()) * salesLine.TrnSale.DiscountedPax.GetValueOrDefault()) / (1 + (salesLine.MstItem.MstTax1.Rate / 100)) * (salesLine.MstItem.MstTax1.Rate / 100));
                             }
                             else
                             {
@@ -341,13 +341,34 @@ namespace PrintProcessor.Controllers
                             totalVATZeroRated += salesLine.Amount;
                         }
 
-                        String itemData = salesLine.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + salesLine.Unit + " @ " + salesLine.Price.ToString("#,##0.00");
-                        String itemAmountData = (salesLine.Price * salesLine.Quantity).ToString("N2", CultureInfo.InvariantCulture);
+                        String itemData = "";
+                        String itemAmountData = "";
+
+                        var equalItemId = from s in db.MstItems
+                                          where s.Id == salesLine.ItemId
+                                          select s;
+
+                        if (equalItemId.FirstOrDefault().Category == "Add-On")
+                        {
+                            itemData = "     " + salesLine.MstItem.ItemDescription + "\n" + "      " + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " @ " + salesLine.Price.ToString("#,##0.00");
+                            itemAmountData = "\n" + (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                        }
+                        else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
+                        {
+                            itemData = "     " + salesLine.MstItem.ItemDescription;
+                        }
+                        else
+                        {
+                            itemData = salesLine.MstItem.ItemDescription + "\n" + salesLine.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " @ " + salesLine.Price.ToString("#,##0.00");
+                            itemAmountData = "\n" + (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
+                        }
+
                         RectangleF itemDataRectangle = new RectangleF
                         {
                             X = x,
                             Y = y,
-                            Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericTypographic).Height))
+                            Size = new Size(150, ((int)graphics.MeasureString(itemData, fontArial8Regular, 150, StringFormat.GenericTypographic).Height)),
+                            Width = width
                         };
                         graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
                         if (_printerType == "Dot Matrix Printer")
