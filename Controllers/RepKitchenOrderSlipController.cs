@@ -285,7 +285,9 @@ namespace PrintProcessor.Controllers
                 graphics.DrawString(tableLabel + sales.FirstOrDefault().MstTable.TableCode, fontArial10Bold, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
                 y += graphics.MeasureString(tableLabel, fontArial8Regular).Height;
                 String itemLabel = "\nITEM";
+                String qty = "\nQUANTITY";
                 graphics.DrawString(itemLabel, fontArial8Regular, drawBrush, new RectangleF(x, y, width, height), drawFormatLeft);
+                graphics.DrawString(qty, fontArial8Regular, drawBrush, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                 y += graphics.MeasureString(itemLabel, fontArial8Regular).Height + 5.0F;
 
                 var salesLines = from d in db.TrnSalesLines
@@ -315,9 +317,11 @@ namespace PrintProcessor.Controllers
                                               select s;
 
                             String itemData = "";
+                            String qtyData = "";
                             if (equalItemId.FirstOrDefault().Category == "Add-On")
                             {
-                                itemData = "     " + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + SL.MstItem.ItemDescription + "\n" + "      *" + SL.Preparation;
+                                itemData = "     " + SL.MstItem.ItemDescription + "\n" + "      *" + SL.Preparation;
+                                qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
                             }
                             else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
                             {
@@ -325,7 +329,8 @@ namespace PrintProcessor.Controllers
                             }
                             else
                             {
-                                itemData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture) + " " + SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
+                                itemData =  SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
+                                qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
                             }
 
                             //String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("#,##0.00");
@@ -337,6 +342,7 @@ namespace PrintProcessor.Controllers
                                 Width = width
                             };
                             graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
+                            graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                             y += itemDataRectangle.Size.Height + 3.0F;
                             //if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
                             //{
