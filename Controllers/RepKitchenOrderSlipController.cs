@@ -320,30 +320,58 @@ namespace PrintProcessor.Controllers
                             String qtyData = "";
                             if (equalItemId.FirstOrDefault().Category == "Add-On")
                             {
-                                itemData = "     " + SL.MstItem.ItemDescription + "\n" + "      *" + SL.Preparation;
+                                itemData = SL.MstItem.ItemDescription;
                                 qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
+
+                                RectangleF itemDataRectangle = new RectangleF
+                                {
+                                    X = 20,
+                                    Y = y,
+                                    Size = new Size(170, ((int)graphics.MeasureString(itemData, fontArial8Regular, 170, StringFormat.GenericTypographic).Height)),
+                                    Width = width
+                                };
+
+                                graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
+                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
+                                y += itemDataRectangle.Size.Height + 3.0F;
                             }
                             else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
                             {
-                                itemData = "     " + SL.MstItem.ItemDescription + "\n" + "      *" + SL.Preparation;
+                                itemData = SL.MstItem.ItemDescription;
+
+                                RectangleF itemDataRectangle = new RectangleF
+                                {
+                                    X = 20,
+                                    Y = y,
+                                    Size = new Size(170, ((int)graphics.MeasureString(itemData, fontArial8Regular, 170, StringFormat.GenericTypographic).Height)),
+                                    Width = width
+                                };
+
+                                graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
+                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
+                                y += itemDataRectangle.Size.Height + 3.0F;
                             }
                             else
                             {
-                                itemData =  SL.MstItem.ItemDescription + "\n" + " *" + SL.Preparation;
+                                itemData =  SL.MstItem.ItemDescription;
                                 qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
-                            }
 
+                                RectangleF itemDataRectangle = new RectangleF
+                                {
+                                    X = x,
+                                    Y = y,
+                                    Size = new Size(170, ((int)graphics.MeasureString(itemData, fontArial8Regular, 170, StringFormat.GenericTypographic).Height)),
+                                    Width = width
+                                };
+
+                                graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
+                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
+                                y += itemDataRectangle.Size.Height + 3.0F;
+                            }
+                            
                             //String itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("#,##0.00");
-                            RectangleF itemDataRectangle = new RectangleF
-                            {
-                                X = x,
-                                Y = y,
-                                Size = new Size(170, ((int)graphics.MeasureString(itemData, fontArial8Regular, 170, StringFormat.GenericTypographic).Height)),
-                                Width = width
-                            };
-                            graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
-                            graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
-                            y += itemDataRectangle.Size.Height + 3.0F;
+
+                            //graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
                             //if (Modules.SysCurrentModule.GetCurrentSettings().PrinterType == "Dot Matrix Printer")
                             //{
                             //    graphics.DrawString(SL.Preparation, fontArial8Regular, drawBrush, new RectangleF(x + 150, y, 100, height), drawFormatLeft);
