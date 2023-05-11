@@ -353,8 +353,8 @@ namespace PrintProcessor.Controllers
                             }
                             else
                             {
-                                itemData =  SL.MstItem.ItemDescription;
-                                qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
+                                itemData = "\n"+ SL.MstItem.ItemDescription;
+                                qtyData = "\n"+ SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
 
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
