@@ -300,6 +300,7 @@ namespace PrintProcessor.Controllers
                                  select d;
                 //foreach (DataGridViewRow row in _orderPrintTable.Rows)
                 //{
+                    int count = 1;
                     foreach (var SL in salesLines.OrderBy(d => d.ItemHeaderId))
                     {
                         //if (Convert.ToInt32(row.Cells[0].Value) == SL.Id && Convert.ToBoolean(row.Cells[3].Value) == true)
@@ -332,7 +333,7 @@ namespace PrintProcessor.Controllers
                                 };
 
                                 graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
-                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
+                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F,10.0f), drawFormatRight);
                                 y += itemDataRectangle.Size.Height + 3.0F;
                             }
                             else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
@@ -348,13 +349,36 @@ namespace PrintProcessor.Controllers
                                 };
 
                                 graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
-                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, height), drawFormatRight);
+                                graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, 10.0f), drawFormatRight);
                                 y += itemDataRectangle.Size.Height + 3.0F;
                             }
                             else
                             {
-                                itemData = "\n"+ SL.MstItem.ItemDescription;
-                                qtyData = "\n"+ SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
+                                var hasAddon = from d in db.MstItemAddOns
+                                               where d.ItemId == SL.ItemId
+                                               select d;
+                                var hasModifier = from d in db.MstItemModifiers
+                                                where d.ItemId == SL.ItemId
+                                                select d;
+
+                                if (hasAddon.Any() || hasModifier.Any())
+                                {
+                                    itemData = "\n" + SL.MstItem.ItemDescription;
+                                    qtyData = "\n" + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
+                                }
+                                else {
+                                    if (count == 1)
+                                    {
+                                        itemData = "\n" + SL.MstItem.ItemDescription;
+                                        qtyData = "\n" + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
+                                    }
+                                    else {
+                                        itemData = SL.MstItem.ItemDescription;
+                                        qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
+                                    }
+                                    count++;
+                                }
+
 
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
