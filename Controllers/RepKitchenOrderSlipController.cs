@@ -354,31 +354,8 @@ namespace PrintProcessor.Controllers
                             }
                             else
                             {
-                                var hasAddon = from d in db.MstItemAddOns
-                                               where d.ItemId == SL.ItemId
-                                               select d;
-                                var hasModifier = from d in db.MstItemModifiers
-                                                where d.ItemId == SL.ItemId
-                                                select d;
-
-                                if (hasAddon.Any() || hasModifier.Any())
-                                {
-                                    itemData = "\n" + SL.MstItem.ItemDescription;
-                                    qtyData = "\n" + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
-                                }
-                                else {
-                                    if (count == 1)
-                                    {
-                                        itemData = "\n" + SL.MstItem.ItemDescription;
-                                        qtyData = "\n" + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
-                                    }
-                                    else {
-                                        itemData = SL.MstItem.ItemDescription;
-                                        qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
-                                    }
-                                    count++;
-                                }
-
+                                itemData = "\n" + SL.MstItem.ItemDescription;
+                                qtyData = "\n" + SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
 
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
