@@ -305,7 +305,7 @@ namespace PrintProcessor.Controllers
                     {
                         //if (Convert.ToInt32(row.Cells[0].Value) == SL.Id && Convert.ToBoolean(row.Cells[3].Value) == true)
                         //{
-                            totalNumberOfItems += 1;
+                            totalNumberOfItems += SL.Quantity;
 
                             totalAmount += SL.Amount;
                             if (SL.Preparation == "NA")
