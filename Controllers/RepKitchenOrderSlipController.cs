@@ -348,6 +348,7 @@ namespace PrintProcessor.Controllers
                                     Width = width
                                 };
 
+                                totalNumberOfItems -= 1;
                                 graphics.DrawString(itemData, fontArial8Regular, Brushes.Black, itemDataRectangle, drawFormatLeft);
                                 graphics.DrawString(qtyData, fontArial8Regular, Brushes.Black, new RectangleF(x, y, 245.0F, 10.0f), drawFormatRight);
                                 y += itemDataRectangle.Size.Height + 3.0F;
