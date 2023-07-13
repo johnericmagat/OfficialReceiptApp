@@ -356,6 +356,7 @@ namespace PrintProcessor.Controllers
                         else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
                         {
                             itemData = "     " + salesLine.MstItem.ItemDescription;
+                            if(salesLine.Price > 0) itemAmountData = (salesLine.Amount + salesLine.DiscountAmount).ToString("N2", CultureInfo.InvariantCulture);
                         }
                         else
                         {
