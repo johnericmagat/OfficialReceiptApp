@@ -339,6 +339,7 @@ namespace PrintProcessor.Controllers
                             else if (equalItemId.FirstOrDefault().Category == "Item Modifier")
                             {
                                 itemData = SL.MstItem.ItemDescription;
+                                if(SL.Price > 0) qtyData = SL.Quantity.ToString("N2", CultureInfo.InvariantCulture);
 
                                 RectangleF itemDataRectangle = new RectangleF
                                 {
